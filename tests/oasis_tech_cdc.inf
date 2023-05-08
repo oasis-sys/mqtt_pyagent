@@ -1,0 +1,102 @@
+;/*++
+;
+;Module Name:
+;
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%Provider%
+DriverVer=03/29/2016,6.1.7601.17518
+CatalogFile=SiLabs-CDC.cat
+PnpLockDown=1	; "a driver package should set PnpLockDown to 1" -- MSDN
+
+; ================= Device section =====================
+
+[Manufacturer]
+%ManufacturerName%=DeviceList, NTx86, NTAMD64, NTIA64
+
+;------------------------------------------------------------------------------
+
+[DeviceList.NTx86]
+%CDCDEVICE_1BA4_0002%=DriverInstall,USB\VID_1BA4&PID_0002
+%CDCDEVICE_2544_0003%=DriverInstall,USB\VID_2544&PID_0003
+%CDCDEVICE_10C4_0003%=DriverInstall,USB\VID_10C4&PID_0003
+%CDCDEVICE_ABCD_1234%=DriverInstall,USB\VID_ABCD&PID_1234
+%CDCDEVICE_2544_0008_02%=DriverInstall,USB\VID_2544&PID_0008&MI_02
+%CDCDEVICE_10C4_0008_02%=DriverInstall,USB\VID_10C4&PID_0008&MI_02
+%CDCDEVICE_10C4_000C_02%=DriverInstall,USB\VID_10C4&PID_000C&MI_02
+%CDCDEVICE_ABCD_1234_02%=DriverInstall,USB\VID_ABCD&PID_1234&MI_02
+%CDCDEVICE_10C4_000F%=DriverInstallNoSerialPropPage,USB\VID_10C4&PID_000F
+
+[DeviceList.NTAMD64]
+%CDCDEVICE_1BA4_0002%=DriverInstall,USB\VID_1BA4&PID_0002
+%CDCDEVICE_2544_0003%=DriverInstall,USB\VID_2544&PID_0003
+%CDCDEVICE_10C4_0003%=DriverInstall,USB\VID_10C4&PID_0003
+%CDCDEVICE_ABCD_1234%=DriverInstall,USB\VID_ABCD&PID_1234
+%CDCDEVICE_2544_0008_02%=DriverInstall,USB\VID_2544&PID_0008&MI_02
+%CDCDEVICE_10C4_0008_02%=DriverInstall,USB\VID_10C4&PID_0008&MI_02
+%CDCDEVICE_10C4_000C_02%=DriverInstall,USB\VID_10C4&PID_000C&MI_02
+%CDCDEVICE_ABCD_1234_02%=DriverInstall,USB\VID_ABCD&PID_1234&MI_02
+%CDCDEVICE_10C4_000F%=DriverInstallNoSerialPropPage,USB\VID_10C4&PID_000F
+
+[DeviceList.NTIA64]
+%CDCDEVICE_1BA4_0002%=DriverInstall,USB\VID_1BA4&PID_0002
+%CDCDEVICE_2544_0003%=DriverInstall,USB\VID_2544&PID_0003
+%CDCDEVICE_10C4_0003%=DriverInstall,USB\VID_10C4&PID_0003
+%CDCDEVICE_ABCD_1234%=DriverInstall,USB\VID_ABCD&PID_1234
+%CDCDEVICE_2544_0008_02%=DriverInstall,USB\VID_2544&PID_0008&MI_02
+%CDCDEVICE_10C4_0008_02%=DriverInstall,USB\VID_10C4&PID_0008&MI_02
+%CDCDEVICE_10C4_000C_02%=DriverInstall,USB\VID_10C4&PID_000C&MI_02
+%CDCDEVICE_ABCD_1234_02%=DriverInstall,USB\VID_ABCD&PID_1234&MI_02
+%CDCDEVICE_10C4_000F%=DriverInstallNoSerialPropPage,USB\VID_10C4&PID_000F
+
+;------------------------------------------------------------------------------
+
+[DriverInstall]
+Include=mdmcpq.inf
+Needs=FakeModemCopyFileSection
+CopyFiles=FakeModemCopyFileSection
+AddReg=SerialPropPageAddReg
+
+[DriverInstall.Services]
+Include=mdmcpq.inf
+AddService = usbser, 0x00000002, DriverServiceInst
+
+[DriverInstallNoSerialPropPage]
+Include=mdmcpq.inf
+Needs=FakeModemCopyFileSection
+CopyFiles=FakeModemCopyFileSection
+
+[DriverInstallNoSerialPropPage.Services]
+Include=mdmcpq.inf
+AddService = usbser, 0x00000002, DriverServiceInst
+
+[DriverServiceInst]
+DisplayName=%SERVICE%
+ServiceType=1 ; SERVICE_KERNEL_DRIVER
+StartType=3 ; SERVICE_DEMAND_START
+ErrorControl=1 ; SERVICE_ERROR_NORMAL
+ServiceBinary=%12%\usbser.sys
+
+[SerialPropPageAddReg]
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+;------------------------------------------------------------------------------
+
+[Strings]
+Provider="OASIS Tech."
+ManufacturerName="OASIS Tech."
+CDCDEVICE_1BA4_0002 = "Silicon Labs CDC Serial port"
+CDCDEVICE_2544_0003 = "Silicon Labs CDC Serial port"
+CDCDEVICE_10C4_0003 = "Silicon Labs CDC Serial port"
+CDCDEVICE_ABCD_1234 = "OASIS Tach. RF Communicator"
+CDCDEVICE_2544_0008_02 = "Silicon Labs CDC Serial port"
+CDCDEVICE_10C4_0008_02 = "Silicon Labs CDC Serial port"
+CDCDEVICE_10C4_000C_02 = "Silicon Labs CDC Serial port"
+CDCDEVICE_ABCD_1234_02 = "Silicon Labs CDC Serial port"
+CDCDEVICE_10C4_000F = "OASIS Tach. RF Communicator"
+SERVICE   = "USB CDC Serial Port Driver"

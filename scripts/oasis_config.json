@@ -1,0 +1,14 @@
+{
+  "json_ver": 1,
+  "host": "server_ip",
+  "irrcon0A515": [
+       "10",
+       "11",
+       "20",
+       "21",
+       "23"
+  ],
+  "user_id": "A515C0DE",
+  "boolean": true,
+  "color": "gold"
+}

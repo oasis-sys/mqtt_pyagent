@@ -1,0 +1,15 @@
+[Unit]
+Description=OASIS MQTT Service
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-abort
+#RestartSec=2
+Environment=DAEMON_CONF=/etc/oasis_config.json
+EnvironmentFile=/etc/default/oasis_settings
+ExecStart=/usr/local/bin/wireless2mqtt.py --host $MQTT_SERVER -u $MQTT_USERNAME -p $MQTT_PASSWORD -f ${DAEMON_CONF} &
+
+[Install]
+WantedBy=multi-user.target
+
